@@ -1,520 +1,328 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <meta name="description" content="RedSphere — sphère autonome de sauvetage : capteurs, IA embarquée, connectivité résiliente. Version mobile immersive." />
-  <title>RedSphere — Mobile Pro</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>RedSphere — Mobile Experience</title>
+<meta name="description" content="Version mobile immersive de RedSphere, sphère autonome de sauvetage. Transitions fluides et interface moderne.">
 
-  <!-- Fallback font stack pour look 'Apple-like' -->
-  <style>
-    :root{
-      --accent: #e21b1b;
-      --bg: #fbfbfc;
-      --card: #fff;
-      --muted: #666;
-      --text: #0b0b0b;
-      --glass: rgba(255,255,255,0.6);
-      --radius: 20px;
-      --shadow-1: 0 8px 30px rgba(0,0,0,0.08);
-      --transition: cubic-bezier(.2,.9,.2,1);
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", "Roboto", sans-serif;
-    }
+<style>
+/* ---------- ROOT ---------- */
+:root {
+  --accent: #e21b1b;
+  --bg: #fafafa;
+  --text: #0a0a0a;
+  --muted: #777;
+  --radius: 18px;
+  --shadow: 0 8px 30px rgba(0,0,0,0.08);
+  --transition: cubic-bezier(.2,.9,.2,1);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Roboto", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+}
 
-    /* Respect user motion preference */
-    @media (prefers-reduced-motion: reduce) {
-      :root { --transition: ease; }
-      * { scroll-behavior: auto !important; animation: none !important; transition: none !important; }
-    }
+/* ---------- HEADER ---------- */
+header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 60px;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 1px 0 rgba(0,0,0,0.05);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 18px;
+  z-index: 2000;
+}
+header .logo {
+  font-weight: 800;
+  color: var(--accent);
+  font-size: 20px;
+}
+.menu-btn {
+  width: 34px; height: 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+}
+.menu-btn span {
+  display: block;
+  height: 3px;
+  background: var(--text);
+  border-radius: 2px;
+  transition: all 0.3s var(--transition);
+}
+.menu-btn.active span:nth-child(1) {
+  transform: rotate(45deg) translateY(10px);
+}
+.menu-btn.active span:nth-child(2) {
+  opacity: 0;
+}
+.menu-btn.active span:nth-child(3) {
+  transform: rotate(-45deg) translateY(-10px);
+}
 
-    *{box-sizing:border-box;margin:0;padding:0}
-    html,body{height:100%}
-    body{
-      background:linear-gradient(180deg,var(--bg) 0%, #f3f4f6 100%);
-      color:var(--text);
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      overflow-y: auto;
-      overscroll-behavior-y:contain;
-    }
+/* ---------- SIDE MENU ---------- */
+.side-menu {
+  position: fixed;
+  top: 0; right: -80%;
+  width: 80%; height: 100%;
+  background: #fff;
+  box-shadow: -6px 0 20px rgba(0,0,0,0.1);
+  transition: right .5s var(--transition);
+  z-index: 1900;
+  display: flex;
+  flex-direction: column;
+  padding: 80px 24px 24px;
+}
+.side-menu.open { right: 0; }
+.side-menu a {
+  font-size: 18px;
+  color: var(--text);
+  text-decoration: none;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+  transition: color .2s;
+}
+.side-menu a:hover { color: var(--accent); }
 
-    /* Fixed header (small) */
-    header{
-      position:fixed;left:0;right:0;top:0;height:56px;
-      display:flex;align-items:center;justify-content:center;
-      z-index:1400;padding:0 16px;
-      background:linear-gradient(180deg,rgba(255,255,255,0.85),rgba(255,255,255,0.6));
-      backdrop-filter: blur(10px);
-      box-shadow: 0 1px 0 rgba(0,0,0,0.05);
-      font-weight:700;color:var(--accent);
-    }
+/* ---------- HERO ---------- */
+.hero {
+  min-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px 40px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content:"";
+  position:absolute;
+  inset:0;
+  background: url('redsphere.png') center/contain no-repeat;
+  opacity: .15;
+  transform: scale(1.2);
+  animation: heroMove 30s linear infinite alternate;
+}
+@keyframes heroMove {
+  from { transform: scale(1.2) translateY(-30px); }
+  to { transform: scale(1.3) translateY(30px); }
+}
+.hero h1 {
+  font-size: 28px;
+  text-align: center;
+  font-weight: 800;
+  margin-bottom: 12px;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 1s var(--transition);
+}
+.hero p {
+  color: var(--muted);
+  text-align: center;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 1.2s var(--transition);
+}
+.hero.visible h1, .hero.visible p {
+  opacity: 1;
+  transform: translateY(0);
+}
 
-    main{padding-top:72px;padding-bottom:120px;}
+/* ---------- SECTION ---------- */
+section {
+  min-height: 80vh;
+  padding: 60px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 1s var(--transition), transform 1s var(--transition);
+}
+section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.section-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  z-index: -1;
+  transform: scale(1.1);
+  opacity: 0.2;
+  transition: transform 1.2s var(--transition), opacity 1.2s var(--transition);
+}
+section.visible .section-bg {
+  transform: scale(1);
+  opacity: 0.4;
+}
 
-/* ---------------- HERO (3D + tilt) ---------------- */
-    .hero{
-      min-height:78vh;
-      padding:40px 20px 30px;
-      display:flex;flex-direction:column;align-items:center;justify-content:center;
-      gap:18px;text-align:center;position:relative;overflow:visible;
-    }
-    .hero__badge{
-      font-size:12px;padding:6px 12px;border-radius:999px;background:rgba(0,0,0,0.06);font-weight:600;color:var(--muted);
-      box-shadow: var(--shadow-1);
-    }
-    .hero__title{
-      font-size:28px;line-height:1.02;font-weight:800;letter-spacing:-0.6px;
-    }
-    .hero__subtitle{color:var(--muted);max-width:86%;margin:0 auto;font-size:15px}
-    /* Stage for 3D sphere */
-    .sphere-stage{
-      width:78%;max-width:360px;margin:10px auto;aspect-ratio:1/1;display:grid;place-items:center;
-      perspective:1200px;
-    }
-    .sphere{
-      width:92%;height:92%;border-radius:50%;
-      background: radial-gradient( circle at 30% 20%, rgba(255,80,80,0.15), rgba(255,0,0,0.18) 10%, rgba(0,0,0,0.25) 70% ),
-                  linear-gradient(180deg, rgba(255,255,255,0.04), rgba(0,0,0,0.18));
-      box-shadow: 0 30px 80px rgba(0,0,0,0.25), inset 0 10px 50px rgba(255,255,255,0.02);
-      transform-style:preserve-3d; transition: transform 600ms var(--transition);
-      display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;
-    }
-    .sphere img{width:82%;height:auto;border-radius:50%;display:block;filter:drop-shadow(0 20px 40px rgba(0,0,0,0.25));transform:translateZ(30px)}
-    /* subtle rotating rings (CSS only) */
-    .ring{
-      position:absolute;border-radius:999px;pointer-events:none;opacity:.12;
-      border:1px solid rgba(255,255,255,0.08);
-      mix-blend-mode:overlay;
-    }
-    .ring.r1{width:110%;height:110%;transform:translateZ(-20px) rotateX(60deg)}
-    .ring.r2{width:150%;height:150%;transform:translateZ(-60px) rotateX(20deg)}
-    .hero__cta{margin-top:6px;display:flex;gap:10px;align-items:center;justify-content:center}
-    .btn{
-      background:linear-gradient(180deg,var(--accent),#c10000);
-      color:white;padding:12px 20px;border-radius:999px;border:none;font-weight:700;box-shadow:0 10px 30px rgba(226,27,27,0.18);
-      transition:transform .2s var(--transition);
-    }
-    .btn:active{transform:scale(.98)}
-    .ghost{background:transparent;border:1px solid rgba(0,0,0,0.06);color:var(--text);padding:10px 16px;border-radius:999px}
+/* ---------- CARDS ---------- */
+.card {
+  background: #fff;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 20px;
+  margin-bottom: 16px;
+}
+.card h2 { color: var(--accent); margin-bottom: 8px; }
 
-/* ---------------- SCROLL-REVEAL SECTIONS ---------------- */
-    .section{
-      padding:48px 20px;max-width:920px;margin:0 auto;position:relative;
-    }
-    .card{background:var(--card);border-radius:18px;padding:18px;box-shadow:var(--shadow-1);margin-bottom:16px}
-    .muted{color:var(--muted);font-size:14px}
+/* ---------- CTA ---------- */
+.cta {
+  text-align: center;
+  background: linear-gradient(180deg,#ffecec,#fff);
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow);
+  margin: 30px 0;
+}
+.cta button {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 12px 22px;
+  border-radius: 999px;
+  font-weight: 700;
+  margin-top: 10px;
+}
 
-/* reveal default hidden */
-    .reveal{opacity:0;transform:translateY(20px) scale(.995);transition:opacity .8s var(--transition),transform .8s var(--transition)}
-    .reveal.visible{opacity:1;transform:translateY(0) scale(1)}
+/* ---------- FOOTER ---------- */
+footer {
+  text-align: center;
+  color: var(--muted);
+  padding: 40px 20px;
+  font-size: 14px;
+}
 
-/* ---------------- PARALLAX LAYERS (JS driven) ---------------- */
-    .parallax-layer{position:relative;transform-origin:center center;will-change:transform;}
+/* ---------- TRANSITIONS SCROLL ---------- */
+.fade-bg {
+  background: linear-gradient(180deg,#fff0f0,#fafafa);
+  position: relative;
+  overflow: hidden;
+}
+.fade-bg::after {
+  content:"";
+  position:absolute;inset:0;
+  background: radial-gradient(circle at top,var(--accent)10%,transparent 80%);
+  opacity:0;
+  transition: opacity 1s var(--transition);
+}
+.fade-bg.visible::after { opacity:.08; }
 
-/* ---------------- CAROUSEL (touch) ---------------- */
-    .carousel{
-      position:relative;width:100%;overflow:hidden;border-radius:14px;
-    }
-    .carousel-track{
-      display:flex;gap:12px;transition:transform .5s var(--transition);touch-action:pan-y;
-      padding:12px;
-    }
-    .carousel-item{flex:0 0 80%;max-width:80%;background:linear-gradient(180deg,#fff,#fafafa);border-radius:12px;padding:14px;box-shadow:var(--shadow-1)}
-    .carousel-item img{width:100%;border-radius:10px;margin-bottom:10px}
-
-/* ---------------- STATS (animated counters) ---------------- */
-    .stats{display:flex;gap:12px;justify-content:space-between}
-    .stat{flex:1;background:linear-gradient(180deg,#fff,#fbfbfd);padding:14px;border-radius:14px;text-align:center}
-    .stat .num{font-size:20px;font-weight:800;color:var(--accent)}
-
-/* ---------------- TIMELINE ---------------- */
-    .timeline{display:flex;flex-direction:column;gap:12px}
-    .timeline-item{display:flex;gap:12px;align-items:flex-start}
-    .timeline-item .dot{width:10px;height:10px;border-radius:50%;background:var(--accent);margin-top:8px;flex:0 0 12px}
-
-/* ---------------- FAQ ACCORDION ---------------- */
-    .faq-item{background:#fff;border-radius:12px;padding:12px 12px;box-shadow:var(--shadow-1)}
-    .faq-title{display:flex;justify-content:space-between;align-items:center;cursor:pointer}
-    .faq-body{max-height:0;overflow:hidden;transition:max-height .5s var(--transition);color:var(--muted);padding-top:0}
-
-/* ---------------- CTA + FOOTER ---------------- */
-    .cta{
-      margin:20px auto;padding:30px;border-radius:18px;background:linear-gradient(180deg,#ffecec,#fff0f0);text-align:center
-    }
-    footer{padding:32px 20px;color:var(--muted);text-align:center;font-size:13px}
-
-/* ---------------- BOTTOM NAV ---------------- */
-    .bottom-nav{
-      position:fixed;left:50%;transform:translateX(-50%);bottom:14px;width:92%;max-width:620px;
-      display:flex;justify-content:space-around;align-items:center;padding:10px;border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,0.9),rgba(255,255,255,0.85));
-      box-shadow:0 12px 30px rgba(0,0,0,0.12);z-index:1500
-    }
-    .bn-btn{background:transparent;border:none;padding:6px 6px;display:flex;flex-direction:column;align-items:center;color:var(--muted);font-weight:700}
-    .bn-btn.active{color:var(--accent);transform:scale(1.04)}
-
-/* small responsive tweaks */
-    @media(min-width:480px){
-      .hero__title{font-size:32px}
-    }
-  </style>
+</style>
 </head>
+
 <body>
 
-<header>RedSphere</header>
+<header>
+  <div class="logo">RedSphere</div>
+  <div class="menu-btn" id="menuBtn">
+    <span></span><span></span><span></span>
+  </div>
+</header>
 
-<main>
-  <!-- HERO -->
-  <section class="hero" id="hero">
-    <div class="hero__badge reveal">Nouveau — Testé en conditions réelles</div>
+<!-- SIDE MENU -->
+<nav class="side-menu" id="sideMenu">
+  <a href="#hero">Accueil</a>
+  <a href="#features">Fonctionnalités</a>
+  <a href="#gallery">Galerie</a>
+  <a href="#buy">Commander</a>
+  <a href="./index.html">Version PC</a>
+</nav>
 
-    <div class="sphere-stage reveal" id="sphereStage" aria-hidden="true">
-      <div class="sphere" id="sphere">
-        <div class="ring r1"></div>
-        <div class="ring r2"></div>
-        <img src="redsphere.png" alt="RedSphere" loading="lazy">
-      </div>
-    </div>
+<!-- HERO -->
+<section class="hero" id="hero">
+  <h1>RedSphere — Sphère de sauvetage autonome</h1>
+  <p>Capteurs thermiques, IA embarquée et connectivité résiliente pour des interventions plus sûres.</p>
+</section>
 
-    <h1 class="hero__title reveal">RedSphere — Sphère autonome de sauvetage</h1>
-    <p class="hero__subtitle reveal">Compacte, résistante et intelligente : détecte les victimes et transmet en temps réel les coordonnées et paramètres vitaux.</p>
+<!-- FEATURES -->
+<section id="features" class="fade-bg">
+  <div class="section-bg" style="background-image:url('deploy1.jpg')"></div>
+  <div class="card">
+    <h2>Navigation autonome</h2>
+    <p>Fusion des capteurs LIDAR et inertiels pour franchir les obstacles et explorer les décombres.</p>
+  </div>
+  <div class="card">
+    <h2>Détection multimodale</h2>
+    <p>Caméras IR et audio pour localiser les victimes, même en absence de visibilité.</p>
+  </div>
+  <div class="card">
+    <h2>Réseau intelligent</h2>
+    <p>Les sphères communiquent entre elles pour étendre la portée du réseau.</p>
+  </div>
+</section>
 
-    <div class="hero__cta reveal">
-      <button class="btn" id="demoBtn">Voir la démo</button>
-      <button class="ghost" id="specsBtn">Caractéristiques</button>
-    </div>
-  </section>
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="section-bg" style="background-image:url('deploy2.jpg')"></div>
+  <div class="card">
+    <h2>Galerie</h2>
+    <p>Découvrez RedSphere en action dans divers environnements.</p>
+  </div>
+  <div class="card">
+    <img src="deploy3.jpg" alt="Deployment" style="width:100%;border-radius:12px;">
+  </div>
+</section>
 
-  <!-- FEATURES with parallax layers -->
-  <section class="section" id="features">
-    <div class="card reveal">
-      <h2>Fonctionnalités clés</h2>
-      <p class="muted">Conçu pour le secours : détection thermique, LIDAR miniature, réseau maillé et IA embarquée pour prioriser les zones à risque.</p>
-      <div class="features" id="featuresList">
-        <div class="feature parallax-layer" data-depth="0.06">
-          <h3>Navigation autonome</h3>
-          <p class="muted">Algorithmes de fusion capteurs + LIDAR pour franchir obstacles et stabiliser la trajectoire.</p>
-        </div>
-        <div class="feature parallax-layer" data-depth="0.09">
-          <h3>Détection multimodale</h3>
-          <p class="muted">Caméra HD, infrarouge, microphone et capteurs chimiques pour évaluer la situation.</p>
-        </div>
-        <div class="feature parallax-layer" data-depth="0.12">
-          <h3>Réseau résilient</h3>
-          <p class="muted">Mesh 4G/5G + satellite fallback et comms inter-sphères.</p>
-        </div>
-      </div>
-    </div>
-  </section>
+<!-- BUY -->
+<section id="buy" class="fade-bg">
+  <div class="section-bg" style="background-image:url('fond.png')"></div>
+  <div class="cta">
+    <h2>Précommandez RedSphere</h2>
+    <p>Livraison estimée sous 8 semaines. Garantie 2 ans incluse.</p>
+    <button>Commander maintenant</button>
+  </div>
+</section>
 
-  <!-- CAROUSEL MEDIA -->
-  <section class="section" id="gallery">
-    <div class="card reveal">
-      <h2>Galerie & déploiements</h2>
-      <p class="muted">Scènes réelles : RedSphere en action pendant des exercices et sauvetages.</p>
-
-      <div class="carousel" id="carousel">
-        <div class="carousel-track" id="carouselTrack">
-          <div class="carousel-item">
-            <img src="deploy1.jpg" alt="RedSphere deployment 1" loading="lazy">
-            <div class="muted">Exercice urbain — repérage sous décombres</div>
-          </div>
-          <div class="carousel-item">
-            <img src="deploy2.jpg" alt="RedSphere deployment 2" loading="lazy">
-            <div class="muted">Test en milieu inondé — communication satellite</div>
-          </div>
-          <div class="carousel-item">
-            <img src="deploy3.jpg" alt="RedSphere deployment 3" loading="lazy">
-            <div class="muted">Exercice nocturne — infrarouge</div>
-          </div>
-        </div>
-      </div>
-      <div style="height:10px"></div>
-      <div class="stats reveal">
-        <div class="stat">
-          <div class="num" data-target="120">0</div>
-          <div class="muted">Populations aidées</div>
-        </div>
-        <div class="stat">
-          <div class="num" data-target="95">0</div>
-          <div class="muted">% déploiements réussis</div>
-        </div>
-        <div class="stat">
-          <div class="num" data-target="2">0</div>
-          <div class="muted">Heures autonomie</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- TIMELINE -->
-  <section class="section" id="timeline">
-    <div class="card reveal">
-      <h2>Roadmap & déploiements</h2>
-      <p class="muted">Des prototypes aux tests sur le terrain — voici notre progression.</p>
-      <div class="timeline">
-        <div class="timeline-item reveal">
-          <div class="dot"></div>
-          <div>
-            <strong>2023</strong>
-            <div class="muted">Prototype V1 — tests labo</div>
-          </div>
-        </div>
-        <div class="timeline-item reveal">
-          <div class="dot"></div>
-          <div>
-            <strong>2024</strong>
-            <div class="muted">V2 — tests en conditions réelles</div>
-          </div>
-        </div>
-        <div class="timeline-item reveal">
-          <div class="dot"></div>
-          <div>
-            <strong>2025</strong>
-            <div class="muted">Production pilote & premières unités déployées</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- SPECS -->
-  <section class="section" id="specs">
-    <div class="card reveal">
-      <h2>Spécifications techniques</h2>
-      <div class="specs">
-        <ul>
-          <li><strong>Diamètre :</strong> 8 cm</li>
-          <li><strong>Poids :</strong> 450 g</li>
-          <li><strong>Autonomie :</strong> 120 min</li>
-          <li><strong>Température :</strong> -10°C → 70°C</li>
-          <li><strong>Communication :</strong> Mesh 4G / Satellite</li>
-          <li><strong>Étanchéité :</strong> IP68</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- FAQ -->
-  <section class="section" id="faq">
-    <div class="card reveal">
-      <h2>Questions fréquentes</h2>
-      <div style="display:flex;flex-direction:column;gap:12px;margin-top:12px">
-        <div class="faq-item reveal">
-          <div class="faq-title">
-            <div>Comment RedSphere communique-t-elle les coordonnées ?</div>
-            <div class="chev">+</div>
-          </div>
-          <div class="faq-body">La sphère utilise un mesh 4G/5G pour se relayer vers le poste de commandement ; en absence réseau, elle bascule sur satellite.</div>
-        </div>
-        <div class="faq-item reveal">
-          <div class="faq-title">
-            <div>Quel est le délai de mise en service ?</div>
-            <div class="chev">+</div>
-          </div>
-          <div class="faq-body">Moins de 5 secondes pour la stabilisation et l'envoi des premiers diagnostics.</div>
-        </div>
-        <div class="faq-item reveal">
-          <div class="faq-title">
-            <div>Peut-on personnaliser les capteurs ?</div>
-            <div class="chev">+</div>
-          </div>
-          <div class="faq-body">Oui : modules thermiques, capteurs gaz, et kit médical en option.</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA / BUY -->
-  <section class="section" id="buy">
-    <div class="card reveal">
-      <h2>Commander</h2>
-      <p class="muted">Version pilote disponible — livraison sous 6-8 semaines.</p>
-      <div style="display:flex;flex-direction:column;gap:12px;margin-top:12px">
-        <div class="cta">
-          <div style="font-weight:800;font-size:18px">À partir de 899 €</div>
-          <div class="muted">Station de charge / support / garantie 2 ans</div>
-          <button class="btn" id="orderBtn" style="margin-top:14px">Commander maintenant</button>
-        </div>
-        <div class="muted" style="text-align:center">Paiement sécurisé • Facturation globale • Livraison internationale</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer>
-    © 2025 RedSphere • <a href="./index.html">Version PC</a>
-  </footer>
-</main>
-
-<!-- bottom navigation -->
-<div class="bottom-nav" role="navigation" aria-label="Navigation principale">
-  <button class="bn-btn active" data-target="hero"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 3l9 9h-6v9h-6v-9H3z" fill="currentColor"/></svg>Accueil</button>
-  <button class="bn-btn" data-target="features"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 13h6v6H4zM14 4h6v6h-6zM14 14h6v6h-6zM4 4h6v6H4z" fill="currentColor"/></svg>Fonctions</button>
-  <button class="bn-btn" data-target="gallery"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M21 19V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14l4-3 3 3 4-5 6 5z" fill="currentColor"/></svg>Galerie</button>
-  <button class="bn-btn" data-target="buy"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M6 6h15l-1.5 9H8l-2-9zM6 19a2 2 0 104 0 2 2 0 00-4 0z" fill="currentColor"/></svg>Acheter</button>
-</div>
+<footer>© 2025 RedSphere — Tous droits réservés.</footer>
 
 <script>
-/* ---------------- Safety: redirect to PC if not mobile ---------------- */
-if (!/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-  // avoid redirect loop if in dev with query ?noredirect
-  if (!location.search.includes('noredirect')) {
-    location.href = './index.html';
+/* --- Redirect to PC if not mobile --- */
+if(!/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)){
+  if(!location.search.includes("noredirect")){
+    location.href="./index.html";
   }
 }
 
-/* ---------------- Helper: reveal on scroll (IntersectionObserver) ---------------- */
+/* --- Burger menu --- */
+const btn = document.getElementById('menuBtn');
+const menu = document.getElementById('sideMenu');
+btn.addEventListener('click', ()=>{
+  btn.classList.toggle('active');
+  menu.classList.toggle('open');
+});
+
+/* --- Scroll reveal with fade --- */
+const sections = document.querySelectorAll('section');
 const observer = new IntersectionObserver((entries)=>{
   entries.forEach(e=>{
-    if(e.isIntersecting){ e.target.classList.add('visible'); observer.unobserve(e.target); }
-  });
-}, { threshold: 0.18 });
-
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-/* ---------------- Hero tilt: device orientation + pointer move ---------------- */
-const sphere = document.getElementById('sphere');
-const stage = document.getElementById('sphereStage');
-let mouseX=0, mouseY=0;
-function applyTilt(x,y){
-  // map to small rotation values
-  const rx = (y - window.innerHeight/2)/ (window.innerHeight/2) * 8;
-  const ry = (x - window.innerWidth/2)/ (window.innerWidth/2) * -8;
-  sphere.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg) translateZ(0)`;
-}
-stage.addEventListener('pointermove', (e)=>{ applyTilt(e.clientX, e.clientY); });
-stage.addEventListener('pointerleave', ()=>{ sphere.style.transform='rotateX(0) rotateY(0) translateZ(0)'; });
-
-if (window.DeviceOrientationEvent && typeof DeviceOrientationEvent.requestPermission === 'function') {
-  // iOS 13+ require permission - we won't request automatically to avoid prompt
-} else if (window.DeviceOrientationEvent) {
-  window.addEventListener('deviceorientation', (ev)=>{
-    // gamma: left/right, beta: front/back
-    const gamma = ev.gamma || 0;
-    const beta = ev.beta || 0;
-    sphere.style.transform = `rotateX(${beta/6}deg) rotateY(${gamma/-6}deg)`;
-  });
-}
-
-/* ---------------- Parallax layers based on scroll (requestAnimationFrame) ---------------- */
-const parallaxEls = document.querySelectorAll('.parallax-layer');
-let latestScrollY = 0;
-function onScroll(){
-  latestScrollY = window.scrollY;
-}
-window.addEventListener('scroll', onScroll, {passive:true});
-function rafParallax(){
-  parallaxEls.forEach(el=>{
-    const depth = parseFloat(el.dataset.depth) || 0;
-    const offset = (latestScrollY - el.getBoundingClientRect().top) * depth;
-    el.style.transform = `translateY(${offset}px)`;
-  });
-  requestAnimationFrame(rafParallax);
-}
-requestAnimationFrame(rafParallax);
-
-/* ---------------- Carousel touch handling ---------------- */
-const track = document.getElementById('carouselTrack');
-let startX=0, currentTranslate=0, prevTranslate=0, isDown=false;
-track.addEventListener('pointerdown',(e)=>{
-  isDown=true; startX=e.clientX; track.setPointerCapture(e.pointerId);
-});
-track.addEventListener('pointermove',(e)=>{
-  if(!isDown) return;
-  const dx = e.clientX - startX;
-  track.style.transform = `translateX(${prevTranslate + dx}px)`;
-});
-track.addEventListener('pointerup',(e)=>{ 
-  isDown=false; track.releasePointerCapture(e.pointerId);
-  prevTranslate = parseTranslateX(track.style.transform);
-  // clamp
-  const max = 0;
-  const min = - (track.scrollWidth - track.parentElement.clientWidth + 24);
-  if(prevTranslate > max) prevTranslate = max;
-  if(prevTranslate < min) prevTranslate = min;
-  track.style.transform = `translateX(${prevTranslate}px)`;
-});
-function parseTranslateX(transform){
-  const m = /translateX\((-?\d+)px\)/.exec(transform);
-  return m ? parseInt(m[1],10) : 0;
-}
-
-/* ---------------- Animated counters ---------------- */
-function animateCounter(el, target, duration=1200){
-  let start = 0, startTime=null;
-  function step(ts){
-    if(!startTime) startTime=ts;
-    const progress = Math.min((ts - startTime)/duration,1);
-    const val = Math.floor(progress * target);
-    el.textContent = val;
-    if(progress < 1) requestAnimationFrame(step);
-  }
-  requestAnimationFrame(step);
-}
-const counters = document.querySelectorAll('.num');
-const counterObserver = new IntersectionObserver((entries)=>{
-  entries.forEach(e=>{
     if(e.isIntersecting){
-      const el = e.target; const target = parseInt(el.dataset.target)||0;
-      animateCounter(el,target,1200);
-      counterObserver.unobserve(el);
+      e.target.classList.add('visible');
     }
   });
-},{threshold:0.5});
-counters.forEach(c=>counterObserver.observe(c));
+},{threshold:0.2});
+sections.forEach(s=>observer.observe(s));
 
-/* ---------------- FAQ accordion ---------------- */
-document.querySelectorAll('.faq-item').forEach(item=>{
-  const title = item.querySelector('.faq-title');
-  const body = item.querySelector('.faq-body');
-  title.addEventListener('click', ()=>{
-    const open = body.style.maxHeight && body.style.maxHeight !== '0px';
-    if(open){
-      body.style.maxHeight = '0';
-      title.querySelector('.chev').textContent = '+';
-    } else {
-      body.style.maxHeight = body.scrollHeight + 'px';
-      title.querySelector('.chev').textContent = '−';
-    }
-  });
-});
-
-/* ---------------- Bottom nav scroll-to + active state ---------------- */
-document.querySelectorAll('.bn-btn').forEach(btn=>{
-  btn.addEventListener('click',(e)=>{
-    const target = btn.dataset.target;
-    const el = document.getElementById(target);
-    if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
-    document.querySelectorAll('.bn-btn').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-  });
-});
-const sections = ['hero','features','gallery','timeline','specs','faq','buy'];
+/* --- Parallax scroll for bg --- */
 window.addEventListener('scroll', ()=>{
-  let cur = 'hero';
-  sections.forEach(id=>{
-    const el = document.getElementById(id);
-    if(!el) return;
-    const rect = el.getBoundingClientRect();
-    if(rect.top < window.innerHeight*0.45) cur = id;
-  });
-  document.querySelectorAll('.bn-btn').forEach(b=>{
-    b.classList.toggle('active', b.dataset.target === cur);
+  document.querySelectorAll('.section-bg').forEach(bg=>{
+    const rect = bg.getBoundingClientRect();
+    const offset = rect.top * -0.1;
+    bg.style.transform = `translateY(${offset}px) scale(1.1)`;
   });
 });
-
-/* ---------------- Buttons: smooth scroll helpers ---------------- */
-document.getElementById('specsBtn').addEventListener('click', ()=> document.getElementById('specs').scrollIntoView({behavior:'smooth'}));
-document.getElementById('demoBtn').addEventListener('click', ()=> document.getElementById('gallery').scrollIntoView({behavior:'smooth'}));
-
-/* ---------------- Simple analytics: trap broken image paths (dev help) ---------------- */
-document.querySelectorAll('img').forEach(img=>{
-  img.addEventListener('error', ()=>{ img.style.opacity=.35; img.alt = img.alt + ' (image manquante)'; });
-});
-
-/* ---------------- On load: add body class ---------------- */
-window.addEventListener('load', ()=>{ document.body.classList.add('loaded'); });
-
 </script>
+
 </body>
 </html>
