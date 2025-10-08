@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RedSphere Mobile</title>
+
+  <!-- Redirection automatique vers PC si non mobile -->
+  <script>
+    if (!/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+      // Si ce n’est pas un mobile → retour sur la version PC
+      if (!window.location.href.includes("index.html")) {
+        window.location.href = "index.html";
+      }
+    }
+  </script>
+
+  <style>
+    :root {
+      --accent: #c92a2a;
+      --dark: #111;
+      --light: #fff;
+      --muted: #666;
+      font-family: "Inter", system-ui, -apple-system, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--light);
+      color: var(--dark);
+      line-height: 1.6;
+      text-align: center;
+      padding: 20px;
+    }
+
+    header {
+      background: var(--accent);
+      color: white;
+      padding: 14px;
+      font-size: 1.3rem;
+      font-weight: 700;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+
+    .hero {
+      background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.6)),
+                  url('fond.png') center/cover no-repeat;
+      color: white;
+      border-radius: 16px;
+      padding: 40px 20px;
+      margin-bottom: 30px;
+    }
+
+    .hero h1 { font-size: 1.8rem; margin-bottom: 12px; }
+    .hero p { font-size: 1rem; color: #ddd; margin-bottom: 20px; }
+
+    .hero img {
+      width: 80%;
+      max-width: 280px;
+      margin-top: 10px;
+      border-radius: 50%;
+      box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+    }
+
+    .btn {
+      background: var(--accent);
+      color: white;
+      padding: 12px 22px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 16px;
+      transition: background 0.3s;
+    }
+
+    .btn:hover {
+      background: #a61b1b;
+    }
+
+    section {
+      background: #f9f9f9;
+      border-radius: 12px;
+      padding: 20px;
+      margin: 20px 0;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    section h2 {
+      color: var(--accent);
+      font-size: 1.4rem;
+      margin-bottom: 10px;
+    }
+
+    section p {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-bottom: 10px;
+    }
+
+    footer {
+      margin-top: 40px;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <header>RedSphere Mobile</header>
+
+  <div class="hero">
+    <h1>RedSphere — Sauvetage intelligent</h1>
+    <p>Une sphère autonome pour explorer, détecter et assister les secours.</p>
+    <img src="redsphere.png" alt="RedSphere">
+    <br>
+    <button class="btn" onclick="window.location.href='index.html'">Voir version PC</button>
+  </div>
+
+  <section>
+    <h2>⚙️ Fonctionnement</h2>
+    <p>Détection de victimes grâce à l’IA embarquée, navigation automatique et transmission des données aux secours.</p>
+  </section>
+
+  <section>
+    <h2>📦 Spécifications</h2>
+    <p>8 cm | 450 g | 2h autonomie | 4G / Wi-Fi / satellite</p>
+  </section>
+
+  <section>
+    <h2>💰 Acheter</h2>
+    <p>Disponible dès <strong>899 €</strong></p>
+    <button class="btn">Commander</button>
+  </section>
+
+  <footer>
+    © 2025 RedSphere — <a href="index.html">Version PC</a>
+  </footer>
+</body>
+</html>
