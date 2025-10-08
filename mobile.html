@@ -1,328 +1,374 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>RedSphere — Mobile Experience</title>
-<meta name="description" content="Version mobile immersive de RedSphere, sphère autonome de sauvetage. Transitions fluides et interface moderne.">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RedSphere — Mobile</title>
 
-<style>
-/* ---------- ROOT ---------- */
-:root {
-  --accent: #e21b1b;
-  --bg: #fafafa;
-  --text: #0a0a0a;
-  --muted: #777;
-  --radius: 18px;
-  --shadow: 0 8px 30px rgba(0,0,0,0.08);
-  --transition: cubic-bezier(.2,.9,.2,1);
-}
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Roboto", sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  overflow-x: hidden;
-}
+  <style>
+    :root {
+      --accent: #ff1e1e;
+      --dark: #0f0f0f;
+      --light: #ffffff;
+      font-family: -apple-system, BlinkMacSystemFont, "Inter", "Roboto", sans-serif;
+    }
 
-/* ---------- HEADER ---------- */
-header {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  height: 60px;
-  background: rgba(255,255,255,0.85);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 1px 0 rgba(0,0,0,0.05);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 18px;
-  z-index: 2000;
-}
-header .logo {
-  font-weight: 800;
-  color: var(--accent);
-  font-size: 20px;
-}
-.menu-btn {
-  width: 34px; height: 28px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  cursor: pointer;
-}
-.menu-btn span {
-  display: block;
-  height: 3px;
-  background: var(--text);
-  border-radius: 2px;
-  transition: all 0.3s var(--transition);
-}
-.menu-btn.active span:nth-child(1) {
-  transform: rotate(45deg) translateY(10px);
-}
-.menu-btn.active span:nth-child(2) {
-  opacity: 0;
-}
-.menu-btn.active span:nth-child(3) {
-  transform: rotate(-45deg) translateY(-10px);
-}
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
 
-/* ---------- SIDE MENU ---------- */
-.side-menu {
-  position: fixed;
-  top: 0; right: -80%;
-  width: 80%; height: 100%;
-  background: #fff;
-  box-shadow: -6px 0 20px rgba(0,0,0,0.1);
-  transition: right .5s var(--transition);
-  z-index: 1900;
-  display: flex;
-  flex-direction: column;
-  padding: 80px 24px 24px;
-}
-.side-menu.open { right: 0; }
-.side-menu a {
-  font-size: 18px;
-  color: var(--text);
-  text-decoration: none;
-  padding: 12px 0;
-  border-bottom: 1px solid #eee;
-  transition: color .2s;
-}
-.side-menu a:hover { color: var(--accent); }
+    body {
+      background: var(--dark);
+      color: var(--light);
+      overflow-x: hidden;
+      transition: background 0.6s ease, color 0.6s ease;
+    }
 
-/* ---------- HERO ---------- */
-.hero {
-  min-height: 90vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 80px 20px 40px;
-  position: relative;
-  overflow: hidden;
-}
-.hero::before {
-  content:"";
-  position:absolute;
-  inset:0;
-  background: url('redsphere.png') center/contain no-repeat;
-  opacity: .15;
-  transform: scale(1.2);
-  animation: heroMove 30s linear infinite alternate;
-}
-@keyframes heroMove {
-  from { transform: scale(1.2) translateY(-30px); }
-  to { transform: scale(1.3) translateY(30px); }
-}
-.hero h1 {
-  font-size: 28px;
-  text-align: center;
-  font-weight: 800;
-  margin-bottom: 12px;
-  opacity: 0;
-  transform: translateY(30px);
-  transition: all 1s var(--transition);
-}
-.hero p {
-  color: var(--muted);
-  text-align: center;
-  opacity: 0;
-  transform: translateY(30px);
-  transition: all 1.2s var(--transition);
-}
-.hero.visible h1, .hero.visible p {
-  opacity: 1;
-  transform: translateY(0);
-}
+    /* HEADER FIXE */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 60px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+      z-index: 1000;
+      transition: background 0.3s ease;
+    }
 
-/* ---------- SECTION ---------- */
-section {
-  min-height: 80vh;
-  padding: 60px 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  opacity: 0;
-  transform: translateY(50px);
-  transition: opacity 1s var(--transition), transform 1s var(--transition);
-}
-section.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-.section-bg {
-  position: absolute;
-  inset: 0;
-  background-size: cover;
-  background-position: center;
-  z-index: -1;
-  transform: scale(1.1);
-  opacity: 0.2;
-  transition: transform 1.2s var(--transition), opacity 1.2s var(--transition);
-}
-section.visible .section-bg {
-  transform: scale(1);
-  opacity: 0.4;
-}
+    header.scrolled {
+      background: rgba(255, 255, 255, 0.95);
+    }
 
-/* ---------- CARDS ---------- */
-.card {
-  background: #fff;
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  padding: 20px;
-  margin-bottom: 16px;
-}
-.card h2 { color: var(--accent); margin-bottom: 8px; }
+    header .brand {
+      color: var(--accent);
+      font-weight: 800;
+      font-size: 1.3rem;
+      letter-spacing: 0.5px;
+    }
 
-/* ---------- CTA ---------- */
-.cta {
-  text-align: center;
-  background: linear-gradient(180deg,#ffecec,#fff);
-  border-radius: var(--radius);
-  padding: 24px;
-  box-shadow: var(--shadow);
-  margin: 30px 0;
-}
-.cta button {
-  background: var(--accent);
-  color: #fff;
-  border: none;
-  padding: 12px 22px;
-  border-radius: 999px;
-  font-weight: 700;
-  margin-top: 10px;
-}
+    /* MENU BURGER */
+    .menu-btn {
+      width: 28px;
+      height: 22px;
+      position: relative;
+      cursor: pointer;
+    }
 
-/* ---------- FOOTER ---------- */
-footer {
-  text-align: center;
-  color: var(--muted);
-  padding: 40px 20px;
-  font-size: 14px;
-}
+    .menu-btn span {
+      position: absolute;
+      height: 3px;
+      width: 100%;
+      background: var(--dark);
+      border-radius: 3px;
+      transition: all 0.4s ease;
+    }
 
-/* ---------- TRANSITIONS SCROLL ---------- */
-.fade-bg {
-  background: linear-gradient(180deg,#fff0f0,#fafafa);
-  position: relative;
-  overflow: hidden;
-}
-.fade-bg::after {
-  content:"";
-  position:absolute;inset:0;
-  background: radial-gradient(circle at top,var(--accent)10%,transparent 80%);
-  opacity:0;
-  transition: opacity 1s var(--transition);
-}
-.fade-bg.visible::after { opacity:.08; }
+    .menu-btn span:nth-child(1) { top: 0; }
+    .menu-btn span:nth-child(2) { top: 9px; }
+    .menu-btn span:nth-child(3) { bottom: 0; }
 
-</style>
+    .menu-btn.active span:nth-child(1) {
+      transform: rotate(45deg);
+      top: 9px;
+    }
+    .menu-btn.active span:nth-child(2) {
+      opacity: 0;
+    }
+    .menu-btn.active span:nth-child(3) {
+      transform: rotate(-45deg);
+      bottom: 9px;
+    }
+
+    /* MENU OUVRABLE */
+    .menu {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 80%;
+      height: 100vh;
+      background: #ffffff;
+      color: #111;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 32px;
+      font-size: 1.2rem;
+      z-index: 999;
+      transition: right 0.5s ease;
+    }
+
+    .menu.active {
+      right: 0;
+    }
+
+    .menu a {
+      text-decoration: none;
+      color: #000;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+
+    .menu a:hover {
+      color: var(--accent);
+    }
+
+    /* SECTION HERO */
+    #hero {
+      height: 100vh;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      background: url('red2.jpg') center/cover no-repeat;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      transform: scale(1.1);
+      transition: transform 1.2s ease, opacity 1.2s ease;
+      filter: brightness(0.85) contrast(1.05);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      top: 50%;
+      transform: translateY(-50%);
+      padding: 0 20px;
+      animation: fadeIn 1.4s ease-out forwards;
+    }
+
+    .hero-content h1 {
+      font-size: 2.8rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 16px;
+      text-shadow: 0 0 25px rgba(255, 0, 0, 0.5);
+    }
+
+    .hero-content p {
+      color: #f1f1f1;
+      font-size: 1.1rem;
+      margin-bottom: 32px;
+      line-height: 1.5;
+    }
+
+    .cta-btn {
+      background: linear-gradient(90deg, #ff2d2d, #c90a0a);
+      border: none;
+      padding: 14px 30px;
+      color: white;
+      font-size: 1rem;
+      border-radius: 40px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(255, 0, 0, 0.3);
+      transition: all 0.4s ease;
+    }
+
+    .cta-btn:hover {
+      transform: translateY(-4px) scale(1.05);
+      box-shadow: 0 10px 30px rgba(255, 0, 0, 0.5);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(-50%); }
+    }
+
+    /* SECTIONS */
+    section {
+      padding: 100px 24px;
+      text-align: center;
+    }
+
+    section h2 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      color: var(--accent);
+    }
+
+    section p {
+      color: #ccc;
+      font-size: 1.05rem;
+      margin-bottom: 40px;
+      line-height: 1.6;
+    }
+
+    /* FONCTIONNALITÉS CLÉS */
+    .features {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.07);
+      border-radius: 16px;
+      padding: 24px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      animation: fadeUp 1s ease-out both;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 35px rgba(255, 0, 0, 0.2);
+    }
+
+    .card h3 {
+      color: #fff;
+      margin-bottom: 10px;
+      font-size: 1.3rem;
+    }
+
+    .card p {
+      color: #ddd;
+      font-size: 1rem;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* FONDU & PARALLAXE SCROLL */
+    .fade-section {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 1s ease;
+    }
+
+    .fade-section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 50px 20px;
+      color: #aaa;
+      font-size: 0.9rem;
+      background: #111;
+    }
+  </style>
 </head>
-
 <body>
 
-<header>
-  <div class="logo">RedSphere</div>
-  <div class="menu-btn" id="menuBtn">
-    <span></span><span></span><span></span>
+  <!-- HEADER -->
+  <header>
+    <div class="brand">RedSphere</div>
+    <div class="menu-btn" id="menuBtn">
+      <span></span><span></span><span></span>
+    </div>
+  </header>
+
+  <div class="menu" id="menu">
+    <a href="#hero">Accueil</a>
+    <a href="#features">Fonctionnalités</a>
+    <a href="#impact">Impact</a>
+    <a href="#acheter">Acheter</a>
   </div>
-</header>
 
-<!-- SIDE MENU -->
-<nav class="side-menu" id="sideMenu">
-  <a href="#hero">Accueil</a>
-  <a href="#features">Fonctionnalités</a>
-  <a href="#gallery">Galerie</a>
-  <a href="#buy">Commander</a>
-  <a href="./index.html">Version PC</a>
-</nav>
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <h1>RedSphere</h1>
+      <p>La sphère autonome qui redéfinit les opérations de secours.  
+      Intelligence, mobilité, et autonomie — un pas vers le futur humanitaire.</p>
+      <button class="cta-btn">Découvrir</button>
+    </div>
+  </section>
 
-<!-- HERO -->
-<section class="hero" id="hero">
-  <h1>RedSphere — Sphère de sauvetage autonome</h1>
-  <p>Capteurs thermiques, IA embarquée et connectivité résiliente pour des interventions plus sûres.</p>
-</section>
+  <!-- FONCTIONNALITÉS CLÉS -->
+  <section id="features" class="fade-section">
+    <h2>⚙️ Fonctionnalités Clés</h2>
+    <p>RedSphere est un concentré de technologie capable d’évoluer dans les environnements les plus extrêmes.</p>
+    <div class="features">
+      <div class="card">
+        <h3>Navigation autonome</h3>
+        <p>LIDAR + IA intégrée permettant à la sphère de se déplacer et d’éviter les obstacles en temps réel.</p>
+      </div>
+      <div class="card">
+        <h3>Détection avancée</h3>
+        <p>Capteurs thermiques et acoustiques pour repérer les victimes même sous les décombres.</p>
+      </div>
+      <div class="card">
+        <h3>Réseau maillé</h3>
+        <p>Chaque sphère communique avec les autres, créant un réseau robuste et auto-réparant.</p>
+      </div>
+      <div class="card">
+        <h3>Énergie intelligente</h3>
+        <p>Recharge sans fil et optimisation dynamique pour prolonger les missions de sauvetage.</p>
+      </div>
+    </div>
+  </section>
 
-<!-- FEATURES -->
-<section id="features" class="fade-bg">
-  <div class="section-bg" style="background-image:url('deploy1.jpg')"></div>
-  <div class="card">
-    <h2>Navigation autonome</h2>
-    <p>Fusion des capteurs LIDAR et inertiels pour franchir les obstacles et explorer les décombres.</p>
-  </div>
-  <div class="card">
-    <h2>Détection multimodale</h2>
-    <p>Caméras IR et audio pour localiser les victimes, même en absence de visibilité.</p>
-  </div>
-  <div class="card">
-    <h2>Réseau intelligent</h2>
-    <p>Les sphères communiquent entre elles pour étendre la portée du réseau.</p>
-  </div>
-</section>
+  <!-- IMPACT -->
+  <section id="impact" class="fade-section">
+    <h2>🌍 Impact Humanitaire</h2>
+    <p>Déployée dans les zones sinistrées, RedSphere aide à sauver des vies, tout en minimisant les risques pour les équipes de secours.</p>
+  </section>
 
-<!-- GALLERY -->
-<section id="gallery">
-  <div class="section-bg" style="background-image:url('deploy2.jpg')"></div>
-  <div class="card">
-    <h2>Galerie</h2>
-    <p>Découvrez RedSphere en action dans divers environnements.</p>
-  </div>
-  <div class="card">
-    <img src="deploy3.jpg" alt="Deployment" style="width:100%;border-radius:12px;">
-  </div>
-</section>
+  <!-- ACHETER -->
+  <section id="acheter" class="fade-section">
+    <h2>🛒 Acheter RedSphere</h2>
+    <p>Soutenez la recherche et obtenez votre sphère connectée — disponible en édition limitée.</p>
+    <button class="cta-btn">Précommander</button>
+  </section>
 
-<!-- BUY -->
-<section id="buy" class="fade-bg">
-  <div class="section-bg" style="background-image:url('fond.png')"></div>
-  <div class="cta">
-    <h2>Précommandez RedSphere</h2>
-    <p>Livraison estimée sous 8 semaines. Garantie 2 ans incluse.</p>
-    <button>Commander maintenant</button>
-  </div>
-</section>
+  <footer>
+    © 2025 RedSphere — Tous droits réservés.
+  </footer>
 
-<footer>© 2025 RedSphere — Tous droits réservés.</footer>
+  <script>
+    // MENU BURGER
+    const menuBtn = document.getElementById('menuBtn');
+    const menu = document.getElementById('menu');
+    menuBtn.addEventListener('click', () => {
+      menuBtn.classList.toggle('active');
+      menu.classList.toggle('active');
+    });
 
-<script>
-/* --- Redirect to PC if not mobile --- */
-if(!/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)){
-  if(!location.search.includes("noredirect")){
-    location.href="./index.html";
-  }
-}
+    // HEADER TRANSPARENT SCROLL
+    window.addEventListener('scroll', () => {
+      const header = document.querySelector('header');
+      header.classList.toggle('scrolled', window.scrollY > 50);
+    });
 
-/* --- Burger menu --- */
-const btn = document.getElementById('menuBtn');
-const menu = document.getElementById('sideMenu');
-btn.addEventListener('click', ()=>{
-  btn.classList.toggle('active');
-  menu.classList.toggle('open');
-});
+    // PARALLAXE HERO
+    window.addEventListener('scroll', () => {
+      const scroll = window.scrollY;
+      const heroBg = document.querySelector('.hero-bg');
+      heroBg.style.transform = `scale(${1.1 + scroll / 1500}) translateY(${scroll / 10}px)`;
+      heroBg.style.opacity = `${1 - scroll / 700}`;
+    });
 
-/* --- Scroll reveal with fade --- */
-const sections = document.querySelectorAll('section');
-const observer = new IntersectionObserver((entries)=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){
-      e.target.classList.add('visible');
-    }
-  });
-},{threshold:0.2});
-sections.forEach(s=>observer.observe(s));
+    // FONDU AU SCROLL
+    const sections = document.querySelectorAll('.fade-section');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.2 });
 
-/* --- Parallax scroll for bg --- */
-window.addEventListener('scroll', ()=>{
-  document.querySelectorAll('.section-bg').forEach(bg=>{
-    const rect = bg.getBoundingClientRect();
-    const offset = rect.top * -0.1;
-    bg.style.transform = `translateY(${offset}px) scale(1.1)`;
-  });
-});
-</script>
-
+    sections.forEach(s => observer.observe(s));
+  </script>
 </body>
 </html>
