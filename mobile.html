@@ -8,9 +8,10 @@
   <style>
     :root {
       --accent: #ff1e1e;
-      --dark: #0f0f0f;
+      --dark: #0b0b0b;
       --light: #ffffff;
-      font-family: -apple-system, BlinkMacSystemFont, "Inter", "Roboto", sans-serif;
+      --glass: rgba(255, 255, 255, 0.07);
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Roboto", sans-serif;
     }
 
     * {
@@ -35,24 +36,26 @@
       width: 100%;
       height: 60px;
       background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(12px);
+      backdrop-filter: blur(10px);
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 0 20px;
       z-index: 1000;
-      transition: background 0.3s ease;
+      transition: all 0.5s ease;
     }
 
     header.scrolled {
       background: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
     }
 
     header .brand {
       color: var(--accent);
-      font-weight: 800;
-      font-size: 1.3rem;
-      letter-spacing: 0.5px;
+      font-weight: 900;
+      font-size: 1.4rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
     }
 
     /* MENU BURGER */
@@ -61,6 +64,11 @@
       height: 22px;
       position: relative;
       cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .menu-btn:hover {
+      transform: scale(1.1);
     }
 
     .menu-btn span {
@@ -88,23 +96,24 @@
       bottom: 9px;
     }
 
-    /* MENU OUVRABLE */
+    /* MENU DÉROULANT */
     .menu {
       position: fixed;
       top: 0;
       right: -100%;
       width: 80%;
       height: 100vh;
-      background: #ffffff;
-      color: #111;
+      background: rgba(255,255,255,0.98);
+      backdrop-filter: blur(8px);
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      gap: 32px;
+      gap: 24px;
       font-size: 1.2rem;
       z-index: 999;
-      transition: right 0.5s ease;
+      transition: right 0.6s cubic-bezier(0.25,1,0.5,1);
+      box-shadow: -5px 0 25px rgba(0,0,0,0.2);
     }
 
     .menu.active {
@@ -115,11 +124,37 @@
       text-decoration: none;
       color: #000;
       font-weight: 600;
-      transition: color 0.3s;
+      transition: all 0.3s ease;
+      position: relative;
     }
 
-    .menu a:hover {
-      color: var(--accent);
+    .menu a::after {
+      content: "";
+      position: absolute;
+      bottom: -5px;
+      left: 50%;
+      transform: translateX(-50%) scaleX(0);
+      width: 60%;
+      height: 2px;
+      background: var(--accent);
+      transition: transform 0.3s ease;
+    }
+
+    .menu a:hover::after {
+      transform: translateX(-50%) scaleX(1);
+    }
+
+    /* Sous-menu déroulant */
+    .submenu {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .menu-item:hover .submenu {
+      display: flex;
+      animation: fadeIn 0.5s ease;
     }
 
     /* SECTION HERO */
@@ -136,9 +171,24 @@
       height: 100%;
       top: 0;
       left: 0;
-      transform: scale(1.1);
+      transform: scale(1.15);
       transition: transform 1.2s ease, opacity 1.2s ease;
-      filter: brightness(0.85) contrast(1.05);
+      filter: brightness(0.85) contrast(1.05) saturate(1.2);
+    }
+
+    .light-overlay {
+      position: absolute;
+      width: 200%;
+      height: 100%;
+      background: linear-gradient(120deg, transparent 20%, rgba(255,255,255,0.3) 50%, transparent 80%);
+      top: 0;
+      left: -100%;
+      animation: shine 6s infinite linear;
+    }
+
+    @keyframes shine {
+      0% { left: -100%; }
+      100% { left: 100%; }
     }
 
     .hero-content {
@@ -152,18 +202,20 @@
     }
 
     .hero-content h1 {
-      font-size: 2.8rem;
+      font-size: 3rem;
       font-weight: 800;
       color: #fff;
       margin-bottom: 16px;
-      text-shadow: 0 0 25px rgba(255, 0, 0, 0.5);
+      text-shadow: 0 0 35px rgba(255, 0, 0, 0.6);
+      letter-spacing: 1px;
     }
 
     .hero-content p {
       color: #f1f1f1;
       font-size: 1.1rem;
       margin-bottom: 32px;
-      line-height: 1.5;
+      line-height: 1.6;
+      text-shadow: 0 0 8px rgba(0,0,0,0.5);
     }
 
     .cta-btn {
@@ -175,13 +227,13 @@
       border-radius: 40px;
       font-weight: 600;
       cursor: pointer;
-      box-shadow: 0 6px 20px rgba(255, 0, 0, 0.3);
+      box-shadow: 0 6px 20px rgba(255, 0, 0, 0.4);
       transition: all 0.4s ease;
     }
 
     .cta-btn:hover {
       transform: translateY(-4px) scale(1.05);
-      box-shadow: 0 10px 30px rgba(255, 0, 0, 0.5);
+      box-shadow: 0 12px 40px rgba(255, 0, 0, 0.6);
     }
 
     @keyframes fadeIn {
@@ -196,7 +248,7 @@
     }
 
     section h2 {
-      font-size: 2rem;
+      font-size: 2.2rem;
       margin-bottom: 20px;
       color: var(--accent);
     }
@@ -205,35 +257,37 @@
       color: #ccc;
       font-size: 1.05rem;
       margin-bottom: 40px;
-      line-height: 1.6;
+      line-height: 1.7;
     }
 
     /* FONCTIONNALITÉS CLÉS */
     .features {
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 24px;
     }
 
     .card {
-      background: rgba(255, 255, 255, 0.07);
-      border-radius: 16px;
-      padding: 24px;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-      animation: fadeUp 1s ease-out both;
-      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      background: var(--glass);
+      border-radius: 20px;
+      padding: 28px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+      transform: translateY(30px);
+      opacity: 0;
+      transition: all 0.8s ease;
     }
 
-    .card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 12px 35px rgba(255, 0, 0, 0.2);
+    .card.visible {
+      transform: translateY(0);
+      opacity: 1;
     }
 
     .card h3 {
       color: #fff;
       margin-bottom: 10px;
-      font-size: 1.3rem;
+      font-size: 1.4rem;
+      letter-spacing: 0.3px;
     }
 
     .card p {
@@ -241,36 +295,19 @@
       font-size: 1rem;
     }
 
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(40px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* FONDU & PARALLAXE SCROLL */
-    .fade-section {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: all 1s ease;
-    }
-
-    .fade-section.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
     /* FOOTER */
     footer {
       text-align: center;
-      padding: 50px 20px;
-      color: #aaa;
+      padding: 60px 20px;
+      color: #999;
       font-size: 0.9rem;
       background: #111;
+      letter-spacing: 0.3px;
     }
   </style>
 </head>
 <body>
 
-  <!-- HEADER -->
   <header>
     <div class="brand">RedSphere</div>
     <div class="menu-btn" id="menuBtn">
@@ -279,57 +316,51 @@
   </header>
 
   <div class="menu" id="menu">
-    <a href="#hero">Accueil</a>
-    <a href="#features">Fonctionnalités</a>
+    <div class="menu-item">
+      <a href="#hero">Accueil</a>
+    </div>
+    <div class="menu-item">
+      <a href="#features">Fonctionnalités</a>
+      <div class="submenu">
+        <a href="#autonomie">Autonomie</a>
+        <a href="#detect">Détection</a>
+        <a href="#reseau">Réseau</a>
+      </div>
+    </div>
     <a href="#impact">Impact</a>
     <a href="#acheter">Acheter</a>
   </div>
 
-  <!-- HERO -->
   <section id="hero">
     <div class="hero-bg"></div>
+    <div class="light-overlay"></div>
     <div class="hero-content">
       <h1>RedSphere</h1>
-      <p>La sphère autonome qui redéfinit les opérations de secours.  
-      Intelligence, mobilité, et autonomie — un pas vers le futur humanitaire.</p>
+      <p>L’intelligence autonome au service du sauvetage humain.  
+      Mobilité, énergie, précision — un nouveau souffle pour les missions de terrain.</p>
       <button class="cta-btn">Découvrir</button>
     </div>
   </section>
 
-  <!-- FONCTIONNALITÉS CLÉS -->
-  <section id="features" class="fade-section">
+  <section id="features">
     <h2>⚙️ Fonctionnalités Clés</h2>
-    <p>RedSphere est un concentré de technologie capable d’évoluer dans les environnements les plus extrêmes.</p>
+    <p>RedSphere combine puissance technologique et réactivité de terrain.</p>
     <div class="features">
-      <div class="card">
-        <h3>Navigation autonome</h3>
-        <p>LIDAR + IA intégrée permettant à la sphère de se déplacer et d’éviter les obstacles en temps réel.</p>
-      </div>
-      <div class="card">
-        <h3>Détection avancée</h3>
-        <p>Capteurs thermiques et acoustiques pour repérer les victimes même sous les décombres.</p>
-      </div>
-      <div class="card">
-        <h3>Réseau maillé</h3>
-        <p>Chaque sphère communique avec les autres, créant un réseau robuste et auto-réparant.</p>
-      </div>
-      <div class="card">
-        <h3>Énergie intelligente</h3>
-        <p>Recharge sans fil et optimisation dynamique pour prolonger les missions de sauvetage.</p>
-      </div>
+      <div class="card"><h3>Navigation autonome</h3><p>IA adaptative pilotée par LIDAR et capteurs gyroscopiques.</p></div>
+      <div class="card"><h3>Détection avancée</h3><p>Analyse thermique et reconnaissance sonore ultra-rapide.</p></div>
+      <div class="card"><h3>Réseau maillé</h3><p>Communication inter-sphères en temps réel avec redondance dynamique.</p></div>
+      <div class="card"><h3>Recharge sans fil</h3><p>Base magnétique et gestion énergétique auto-optimisée.</p></div>
     </div>
   </section>
 
-  <!-- IMPACT -->
-  <section id="impact" class="fade-section">
+  <section id="impact">
     <h2>🌍 Impact Humanitaire</h2>
-    <p>Déployée dans les zones sinistrées, RedSphere aide à sauver des vies, tout en minimisant les risques pour les équipes de secours.</p>
+    <p>Déployée sur le terrain, RedSphere agit là où chaque seconde compte, réduisant les risques humains et optimisant les opérations de secours.</p>
   </section>
 
-  <!-- ACHETER -->
-  <section id="acheter" class="fade-section">
+  <section id="acheter">
     <h2>🛒 Acheter RedSphere</h2>
-    <p>Soutenez la recherche et obtenez votre sphère connectée — disponible en édition limitée.</p>
+    <p>Précommandez votre sphère connectée — édition spéciale 2025, disponible en quantité limitée.</p>
     <button class="cta-btn">Précommander</button>
   </section>
 
@@ -338,7 +369,6 @@
   </footer>
 
   <script>
-    // MENU BURGER
     const menuBtn = document.getElementById('menuBtn');
     const menu = document.getElementById('menu');
     menuBtn.addEventListener('click', () => {
@@ -346,30 +376,23 @@
       menu.classList.toggle('active');
     });
 
-    // HEADER TRANSPARENT SCROLL
     window.addEventListener('scroll', () => {
       const header = document.querySelector('header');
       header.classList.toggle('scrolled', window.scrollY > 50);
-    });
-
-    // PARALLAXE HERO
-    window.addEventListener('scroll', () => {
-      const scroll = window.scrollY;
       const heroBg = document.querySelector('.hero-bg');
-      heroBg.style.transform = `scale(${1.1 + scroll / 1500}) translateY(${scroll / 10}px)`;
-      heroBg.style.opacity = `${1 - scroll / 700}`;
+      const scroll = window.scrollY;
+      heroBg.style.transform = `scale(${1.15 + scroll / 1500}) translateY(${scroll / 12}px)`;
+      heroBg.style.opacity = `${1 - scroll / 800}`;
     });
 
-    // FONDU AU SCROLL
-    const sections = document.querySelectorAll('.fade-section');
+    const cards = document.querySelectorAll('.card');
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) entry.target.classList.add('visible');
       });
     }, { threshold: 0.2 });
 
-    sections.forEach(s => observer.observe(s));
+    cards.forEach(c => observer.observe(c));
   </script>
 </body>
 </html>
-
