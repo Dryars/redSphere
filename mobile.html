@@ -8,11 +8,10 @@
   <!-- Redirection automatique vers PC si non mobile -->
   <script>
     if (!/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-      // Si ce n’est pas un mobile → retour sur la version PC
-      if (!window.location.href.includes("index.html")) {
-        window.location.href = "index.html";
-      }
+    if (!window.location.href.includes("index.html")) {
+      window.location.href = "./index.html";
     }
+  }
   </script>
 
   <style>
@@ -149,3 +148,4 @@
   </footer>
 </body>
 </html>
+
