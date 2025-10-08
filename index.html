@@ -341,11 +341,14 @@ window.dispatchEvent(new Event('scroll'));
     
   // Vérifie si l’utilisateur est sur un appareil mobile
   if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-    // Redirige vers la version mobile
-    window.location.href = "mobile.html";
+    // Redirige vers mobile.html dans le même dossier
+    if (!window.location.href.includes("mobile.html")) {
+      window.location.href = "./mobile.html";
+    }
   }
 
 
   </script>
 </body>
 </html>
+
