@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>RedWatch — Montre-balise intelligente</title>
+  <style>
+  :root {
+    --accent: #ff2a2a;
+    --dark: #0f0f0f;
+    --light: #f9f9f9;
+    --muted: #ccc;
+    font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* ✅ FONDU BLANC À L’ENTRÉE ET À LA SORTIE */
+  body { 
+    background: var(--dark); 
+    color: var(--light); 
+    overflow-x: hidden; 
+    opacity: 0;
+    background-color: white;
+    transition: opacity 0.8s ease-in-out, background-color 1s ease-in-out;
+  }
+  body.fade-in {
+    opacity: 1;
+    background-color: var(--dark);
+  }
+  body.fade-out {
+    opacity: 0;
+    background-color: white;
+  }
+
+  img { max-width: 100%; display: block; }
+
+  header {
+    position: sticky;
+    top: 0;
+    background: rgba(15,15,15,0.9);
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 60px;
+    z-index: 100;
+  }
+  header .brand {
+    font-weight: 800;
+    font-size: 1.4rem;
+    color: var(--accent);
+  }
+  nav a {
+    margin-left: 30px;
+    text-decoration: none;
+    color: white;
+    font-weight: 500;
+    position: relative;
+  }
+  nav a::after {
+    content: '';
+    position: absolute;
+    left: 0; bottom: -4px;
+    width: 0; height: 2px;
+    background: var(--accent);
+    transition: width 0.3s;
+  }
+  nav a:hover::after { width: 100%; }
+
+  section {
+    padding: 80px 60px;
+    text-align: center;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  h2 {
+    font-size: 2.6rem;
+    margin-bottom: 20px;
+    color: white;
+  }
+  p {
+    font-size: 1.2rem;
+    color: var(--muted);
+    margin-bottom: 30px;
+    line-height: 1.7;
+  }
+
+  #intro {
+    padding-top: 40px;
+    padding-bottom: 60px;
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% {
+      filter: drop-shadow(0 0 20px rgba(255, 60, 60, 0.4))
+              drop-shadow(0 0 40px rgba(255, 0, 0, 0.25));
+    }
+    50% {
+      filter: drop-shadow(0 0 35px rgba(255, 80, 80, 0.8))
+              drop-shadow(0 0 70px rgba(255, 0, 0, 0.5));
+    }
+  }
+
+  .product-hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 40px;
+    position: relative;
+  }
+
+  .product-hero img {
+    width: 380px;
+    border-radius: 40px;
+    animation: pulse-glow 3.5s ease-in-out infinite;
+    transition: transform 0.5s ease;
+  }
+  .product-hero img:hover {
+    transform: scale(1.05);
+  }
+
+  .product-text {
+    flex: 1;
+    text-align: left;
+    min-width: 300px;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 16px 36px;
+    border-radius: 14px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .btn-primary:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(255,0,0,0.4);
+  }
+
+  .features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+  }
+  .feature {
+    background: rgba(255,255,255,0.05);
+    border-radius: 20px;
+    padding: 30px;
+    text-align: left;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .feature:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 30px rgba(255,0,0,0.2);
+  }
+  .feature h3 {
+    color: var(--accent);
+    margin-bottom: 12px;
+    font-size: 1.3rem;
+  }
+
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+    margin-top: 50px;
+  }
+  .gallery img {
+    border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+    transition: transform 0.3s;
+  }
+  .gallery img:hover {
+    transform: scale(1.05);
+  }
+
+  .specs {
+    background: #141414;
+    padding: 80px 40px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  .specs ul {
+    list-style: none;
+    max-width: 800px;
+    margin: 40px auto;
+    text-align: left;
+  }
+  .specs li {
+    margin-bottom: 16px;
+    font-size: 1.1rem;
+    color: var(--muted);
+  }
+
+  footer {
+    text-align: center;
+    padding: 40px;
+    color: var(--muted);
+    background: #0b0b0b;
+    font-size: 0.95rem;
+  }
+</style>
+</head>
+<body>
+  <header>
+    <div class="brand"><a href="redsphere.html" style="color:var(--accent);text-decoration:none;">RedWatch</a></div>
+    <nav>
+      <a href="#features">Fonctionnalités</a>
+      <a href="#specs">Fiche technique</a>
+      <a href="#galerie">Galerie</a>
+      <a href="#acheter">Acheter</a>
+      <a href="redsphere.html">Professionnels</a>
+    </nav>
+  </header>
+
+  <section id="intro">
+    <div class="product-hero">
+      <div class="product-text">
+        <h2>RedWatch — La montre-balise intelligente</h2>
+        <p>Pensée pour la sécurité des particuliers et des professionnels, RedWatch combine élégance, robustesse et technologie d’alerte avancée.  
+        En un geste, elle transmet votre position GPS et déclenche une alerte sécurisée à vos contacts ou aux secours.</p>
+        <p><strong>À partir de 299 €</strong></p>
+        <button class="btn-primary" onclick="openRedWatchDemo()">Découvrir RedWatch</button>
+      </div>
+      <img src="redwatch.png" alt="Montre RedWatch — design noir et rouge">
+    </div>
+  </section>
+
+  <section id="features">
+    <h2>Fonctionnalités clés</h2>
+    <div class="features">
+      <div class="feature">
+        <h3>Bouton SOS instantané</h3>
+        <p>Un appui long envoie votre position GPS et un message d'urgence à vos contacts de confiance ou aux autorités locales.</p>
+      </div>
+      <div class="feature">
+        <h3>Suivi en temps réel</h3>
+        <p>Grâce à la 4G intégrée, vos proches peuvent suivre vos déplacements depuis une interface sécurisée.</p>
+      </div>
+      <div class="feature">
+        <h3>Design ergonomique & résistant</h3>
+        <p>Boîtier aluminium noir mat, bracelet en silicone renforcé, étanchéité IP68, écran Gorilla Glass.</p>
+      </div>
+      <div class="feature">
+        <h3>Autonomie & recharge rapide</h3>
+        <p>Jusqu’à 72 h d’autonomie et recharge magnétique complète en 45 minutes.</p>
+      </div>
+      <div class="feature">
+        <h3>Mode discret</h3>
+        <p>Déclenchement d’alerte silencieux (sans vibration ni lumière) pour les situations sensibles.</p>
+      </div>
+      <div class="feature">
+        <h3>Connectivité étendue</h3>
+        <p>Compatible Bluetooth, Wi-Fi et 4G — RedWatch s’adapte à votre environnement, même hors réseau classique.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="galerie">
+    <h2>Galerie produit</h2>
+    <p>Découvrez RedWatch sous tous les angles — élégante, fonctionnelle et prête à réagir.</p>
+    <div class="gallery">
+      <img src="watch3.png" alt="Interface alerte SOS RedWatch">
+      <img src="redwatch.png" alt="Design minimaliste de la RedWatch">
+      <img src="watch4.png" alt="RedWatch portée au poignet">
+    </div>
+  </section>
+
+  <section id="specs" class="specs">
+    <h2>Fiche technique</h2>
+    <ul>
+      <li>Écran OLED tactile 1.6” — luminosité adaptative</li>
+      <li>Résolution : 400x400 px</li>
+      <li>Capteurs : GPS, cardiofréquencemètre, gyroscope, détecteur de chute</li>
+      <li>Réseaux : 4G LTE / Bluetooth 5.2 / Wi-Fi</li>
+      <li>Étanchéité : IP68 (jusqu’à 50 m)</li>
+      <li>Autonomie : jusqu’à 72 h, recharge magnétique rapide</li>
+      <li>Matériaux : boîtier aluminium, verre Gorilla Glass 4</li>
+      <li>Poids : 48 g</li>
+    </ul>
+  </section>
+
+  <section id="acheter">
+    <h2>Commander RedWatch</h2>
+    <p>Disponible dès maintenant pour les particuliers et entreprises de sécurité. Prix de lancement : <strong>299 €</strong>.</p>
+    <button class="btn-primary">Commander maintenant</button>
+  </section>
+
+  <footer>
+    <p>© 2025 RedWatch — Une innovation RedSphere Technologies. | <a href="redsphere.html" style="color:var(--accent);text-decoration:none;">Découvrir RedSphere</a></p>
+  </footer>
+
+  <script>
+    // ✅ FONDU À L’ARRIVÉE — depuis le blanc
+    window.addEventListener("load", () => {
+      setTimeout(() => {
+        document.body.classList.add("fade-in");
+      }, 50);
+    });
+
+    // ✅ FONDU À LA SORTIE — vers le blanc
+    document.querySelectorAll('a[href]').forEach(link => {
+      link.addEventListener('click', e => {
+        const url = link.getAttribute('href');
+        if (url && !url.startsWith('#')) {
+          e.preventDefault();
+          document.body.classList.remove('fade-in');
+          document.body.classList.add('fade-out');
+          setTimeout(() => {
+            window.location.href = url;
+          }, 600); // délai légèrement plus court pour un effet fluide
+        }
+      });
+    });
+
+    function openRedWatchDemo() {
+      alert("Simulation : ouverture de la démo RedWatch (en développement).");
+    }
+  </script>
+</body>
+</html>
