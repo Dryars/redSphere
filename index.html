@@ -1,8 +1,8 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>RedSphere — Sphère autonome de sauvetage</title>
   <style>
     :root {
@@ -324,6 +324,7 @@ window.dispatchEvent(new Event('scroll'));
       }, 100); // 100ms delay
     });
 
+
     // fade-out rapide sur clic RedWatch
     const linkRedwatch = document.getElementById('link-redwatch');
     linkRedwatch.addEventListener('click', function(e) {
@@ -335,6 +336,16 @@ window.dispatchEvent(new Event('scroll'));
         window.location.href = url;
       }, 400); // correspond à la durée du fade-out
     });
+
+
+    
+  // Vérifie si l’utilisateur est sur un appareil mobile
+  if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+    // Redirige vers la version mobile
+    window.location.href = "mobile.html";
+  }
+
+
   </script>
 </body>
 </html>
